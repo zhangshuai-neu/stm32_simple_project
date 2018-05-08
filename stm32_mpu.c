@@ -58,10 +58,26 @@ void MPU_AccessPermConfig(void)
 //	*PrivilegedReadOnlyAddr=1;
   
   /* 
-   * 测试2： 非特权模式下，写 特权区
+   * 测试2： 非特权模式下，读 特权区
    * 
    */
-   	drop_privileges();
-	char a=*PrivilegedReadOnlyAddr;
+   	//drop_privileges();
+	//char a=*PrivilegedReadOnlyAddr;
+	/* 
+	
+   * 测试3： 非特权模式下，写 特权区
+   * 
+   */
+	drop_privileges();
+	*PrivilegedReadOnlyAddr=1;
 }
+
+
+
+
+
+
+
+
+
 
