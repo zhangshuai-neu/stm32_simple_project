@@ -1,0 +1,24 @@
+#! /bin/bash
+
+FIND_SIGN="SCB";
+FILE_TYPE=".h";
+FILE_NAME="";
+
+if test -e name_list; then
+	echo ;
+else 
+	touch name_list;
+	ls -1 |grep ${FILE_TYPE} > name_list;
+fi
+
+FILE_NUM=`wc -l name_list | cut -d' ' -f1`
+
+i=1;
+while [ ${i} -le ${FILE_NUM} ];do
+	FILE_NAME=`sed "${i}p" -n name_list`;
+	cat ${FILE_NAME} |grep -n ${FIND_SIGN};
+	let i=i+1;
+done;
+
+
+

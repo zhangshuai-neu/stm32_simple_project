@@ -1,0 +1,51 @@
+建立工程文件夹project
+在其中建立文件夹stlib,在其中分别建立子目录cminc,inc,src
+其中inc对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Libraries/STM32F4xx_StdPeriph_Driver/inc
+其中src对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Libraries/STM32F4xx_StdPeriph_Driver/src
+其中cminc对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Libraries/CMSIS/Include
+
+向stlib中添加文件startup_stm32f40xx.s, stm32f4xx.h, system_stm32f4xx.h, 
+	stm32f4xx_conf.h, system_stm32f4xx.c, STM32F407ZET6_FLASH.ld
+其中文件startup_stm32f40xx.s对应的目录是(除此之外还要将后缀s改为S)
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/TrueSTUDIO
+其中文件stm32f4xx.h, system_stm32f4xx.h对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include
+其中文件stm32f4xx_conf.h, system_stm32f4xx.c对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Project/STM32F4xx_StdPeriph_Templates
+其中文件STM32F407ZET6_FLASH.ld对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Project/STM32F4xx_StdPeriph_Templates/TrueSTUDIO/STM32F40_41xxx
+除此之外还要将STM32F417IG_FLASH.ld改为STM32F407ZET6_FLASH.ld
+
+想project文件夹中添加文件main.c Makefile, stm32f4xx_it.c, stm32f4xx_it.h
+其中文件stm32f4xx_it.c, stm32f4xx_it.h对应的目录是
+/STM32F4xx_DSP_StdPeriph_Lib_V1.8.0/Project/STM32F4xx_StdPeriph_Templates
+
+我们使用的是STM32f407zgt6的板子,但是blog中使用的是stm32f407zet6,我们的实际配置是
+RAM 192K(128k SRAM, 64k CCMRAM), FLASH 1024K
+所以需要修改STM32F407ZET6_FLASH.ld:
+34行
+_estack = 0x20020000; /* end of RAM */
+43-46行
+MEMORY
+{
+	FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 512K
+	RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
+	CCMRAM (rw)      : ORIGIN = 0x10000000, LENGTH = 64K
+}
+
+还要修改stlib/stm32f4xx.h
+70行去掉#define STM32F40_41xxx的注释
+186行添加#define __FPU_USED 1开启芯片的FPU(硬件浮点运算)
+
+编写main.c(样例)
+#include "stm32f4xx.h"
+#include "stm32f4xx_syscfg.h"
+#include "stm32f4xx_gpio.h"
+
+int main(void)
+{
+    return 0;
+}
